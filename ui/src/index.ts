@@ -17,7 +17,6 @@ export default definePlugin({
           searchable: true,
           menu: {
             name: '创作者申请',
-            group: '内容',
             icon: markRaw(IconPlug),
             priority: 0,
           },
