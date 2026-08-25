@@ -1,0 +1,30 @@
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-creator-application-user
+  labels:
+    halo.run/role-template: "true"
+    halo.run/hidden: "true"
+    rbac.authorization.halo.run/aggregate-to-authenticated: "true"
+rules:
+  - apiGroups: [ "api.creator.jnoasa.cn" ]
+    resources: [ "me" ]
+    verbs: [ "get" ]
+  - apiGroups: [ "api.creator.jnoasa.cn" ]
+    resources: [ "applications" ]
+    verbs: [ "create" ]
+---
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: role-template-creator-application-manage
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "创作者申请"
+    rbac.authorization.halo.run/display-name: "创作者申请管理"
+    rbac.authorization.halo.run/ui-permissions: '["plugin:creator-application:manage"]'
+rules:
+  - apiGroups: [ "creator.jnoasa.cn", "api.creator.jnoasa.cn" ]
+    resources: [ "creatorapplications", "applications", "applications/review" ]
+    verbs: [ "get", "list", "create", "update", "patch", "delete" ]

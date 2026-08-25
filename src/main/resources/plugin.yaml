@@ -1,0 +1,19 @@
+# Refer https://docs.halo.run/developer-guide/plugin/basics/manifest
+
+apiVersion: plugin.halo.run/v1alpha1
+kind: Plugin
+metadata:
+  # The name defines how the plugin is invoked, A unique name
+  name: PluginCreatorApplication
+spec:
+  enabled: true
+  requires: ">=2.26.0"
+  author:
+    name: Akagi_Zen
+    website: https://jnoasa.cn
+  logo: logo.png
+  displayName: "创作者申请"
+  description: "提供两阶段创作者申请、管理员审核与角色升级。"
+  license:
+    - name: "GPL-3.0"
+      url: "https://www.gnu.org/licenses/gpl-3.0.html"
