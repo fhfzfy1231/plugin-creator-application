@@ -1,0 +1,35 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: plugin-creator-application-settings
+spec:
+  forms:
+    - group: webhook
+      label: AstrBot 通知
+      formSchema:
+        - $formkit: checkbox
+          label: 启用 Webhook 通知
+          name: enabled
+          id: creator_application_webhook_enabled
+          value: false
+          help: 用户提交申请成功后，将申请摘要推送到 AstrBot
+        - $formkit: text
+          if: "$get(creator_application_webhook_enabled).value === true"
+          label: AstrBot Webhook 地址
+          name: endpoint
+          validation: required
+          placeholder: "http://astrbot:6190/halo-creator-application/webhook"
+          help: Halo 容器必须能够访问此地址
+        - $formkit: password
+          if: "$get(creator_application_webhook_enabled).value === true"
+          label: Webhook 共享密钥
+          name: secret
+          validation: required|length:16,256
+          help: 至少 16 位，并与 AstrBot 插件中的 webhook_secret 完全一致
+        - $formkit: url
+          if: "$get(creator_application_webhook_enabled).value === true"
+          label: 审核页面地址
+          name: reviewUrl
+          validation: required|url
+          value: "https://jnoasa.cn/console/creator-applications/review"
+          help: 将附在群聊通知末尾，方便管理员直接进入审核页面

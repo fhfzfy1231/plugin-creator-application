@@ -12,8 +12,10 @@ spec:
     name: Akagi_Zen
     website: https://jnoasa.cn
   logo: logo.png
+  configMapName: plugin-creator-application-configmap
+  settingName: plugin-creator-application-settings
   displayName: "创作者申请"
-  description: "提供控制台内的两阶段创作者申请与管理员审核。"
+  description: "提供控制台内的两阶段创作者申请、管理员审核与 AstrBot 通知。"
   license:
     - name: "GPL-3.0"
       url: "https://www.gnu.org/licenses/gpl-3.0.html"

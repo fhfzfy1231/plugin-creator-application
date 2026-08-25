@@ -13,6 +13,7 @@
 - 保存驳回原因与审核记录
 - 审核通过后不自动修改用户组，由管理员手动分配相应角色
 - 申请与审核使用独立的 UI 和 API 权限
+- 可通过签名 Webhook 将新申请实时推送到 AstrBot 群聊
 
 ## 构建与安装
 
@@ -26,6 +27,16 @@
 
 插件将“申请”权限聚合给所有已登录用户。超级管理员默认可以审核，其他管理员需要分配“创作者申请审核”权限。
 
+## AstrBot 通知
+
+安装配套的 `astrbot_plugin_creator_application` 后，在 Halo 插件详情的“设置”中打开 AstrBot 通知，并填写：
+
+- AstrBot Webhook 地址，例如 `http://astrbot:6190/halo-creator-application/webhook`
+- 至少 16 位的共享密钥，必须与 AstrBot 插件配置一致
+- 审核页面完整地址
+
+Webhook 使用时间戳和 HMAC-SHA256 签名。通知只包含申请人、申请阶段、理由或文章信息，不传输 QQ 群截图。
+
 GitHub Actions 已配置在 `.github/workflows/ci.yaml`。推送到 `main` 或创建 Pull Request 时会使用 JDK 21、Node.js 24 和 pnpm 9 执行 Halo 官方插件 CI。
 
 ## 数据与隐私
@@ -34,7 +45,4 @@ GitHub Actions 已配置在 `.github/workflows/ci.yaml`。推送到 `main` 或�
 
 ## 下一阶段
 
-- Webhook 设置页（地址、共享密钥、开关、重试）
-- 提交、通过和驳回事件签名推送
-- AstrBot 插件接收事件并向指定群聊发送消息
 - 申请人查看自己的历史和驳回原因

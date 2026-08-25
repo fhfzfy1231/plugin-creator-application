@@ -16,6 +16,7 @@ import run.halo.app.extension.ReactiveExtensionClient;
 @RequiredArgsConstructor
 public class CreatorApplicationService {
     private final ReactiveExtensionClient client;
+    private final CreatorApplicationWebhookNotifier webhookNotifier;
 
     public Mono<CreatorApplication> submit(String username, SubmitCommand command) {
         return client.fetch(User.class, username)
@@ -37,7 +38,8 @@ public class CreatorApplicationService {
                 spec.setArticleUrl(trim(command.articleUrl()));
                 spec.setSubmittedAt(Instant.now());
                 app.setSpec(spec);
-                return client.create(app);
+                return client.create(app)
+                    .flatMap(created -> webhookNotifier.notifySubmitted(created).thenReturn(created));
             })));
     }
 
