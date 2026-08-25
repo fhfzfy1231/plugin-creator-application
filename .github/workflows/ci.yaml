@@ -15,3 +15,36 @@ jobs:
       node-version: 24
       pnpm-version: 9
       ui-path: "ui"
+
+  build-artifact:
+    name: Build downloadable JAR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: ui/pnpm-lock.yaml
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Build plugin
+        run: ./gradlew clean build
+      - name: Upload plugin JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-creator-application-0.1.0
+          path: build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 14
