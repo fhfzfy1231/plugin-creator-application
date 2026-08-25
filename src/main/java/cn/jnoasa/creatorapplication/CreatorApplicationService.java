@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
-import run.halo.app.core.extension.RoleBinding;
 import run.halo.app.core.extension.User;
 import run.halo.app.extension.ListOptions;
 import run.halo.app.extension.Metadata;
@@ -16,8 +15,6 @@ import run.halo.app.extension.ReactiveExtensionClient;
 @Component
 @RequiredArgsConstructor
 public class CreatorApplicationService {
-    public static final String CONTRIBUTOR_ROLE = "post-contributor";
-    public static final String AUTHOR_ROLE = "post-author";
     private final ReactiveExtensionClient client;
 
     public Mono<CreatorApplication> submit(String username, SubmitCommand command) {
@@ -56,21 +53,8 @@ public class CreatorApplicationService {
                 app.getSpec().setReviewMessage(trim(command.message()));
                 app.getSpec().setReviewer(reviewer);
                 app.getSpec().setReviewedAt(Instant.now());
-                Mono<Void> grant = command.approved()
-                    ? grantRole(app.getSpec().getUsername(), app.getSpec().getStage() == CreatorApplication.Stage.CONTRIBUTOR
-                        ? CONTRIBUTOR_ROLE : AUTHOR_ROLE)
-                    : Mono.empty();
-                return grant.then(client.update(app));
+                return client.update(app);
             });
-    }
-
-    private Mono<Void> grantRole(String username, String role) {
-        var opts = ListOptions.builder().build();
-        return client.listAll(RoleBinding.class, opts, Sort.unsorted())
-            .filter(binding -> binding.getRoleRef() != null && role.equals(binding.getRoleRef().getName()))
-            .filter(RoleBinding.containsUser(username))
-            .hasElements()
-            .flatMap(exists -> exists ? Mono.empty() : client.create(RoleBinding.create(username, role)).then());
     }
 
     private Mono<Void> validateNoPending(String username, CreatorApplication.Stage stage) {

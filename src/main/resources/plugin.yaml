@@ -13,7 +13,7 @@ spec:
     website: https://jnoasa.cn
   logo: logo.png
   displayName: "创作者申请"
-  description: "提供两阶段创作者申请、管理员审核与角色升级。"
+  description: "提供控制台内的两阶段创作者申请与管理员审核。"
   license:
     - name: "GPL-3.0"
       url: "https://www.gnu.org/licenses/gpl-3.0.html"
