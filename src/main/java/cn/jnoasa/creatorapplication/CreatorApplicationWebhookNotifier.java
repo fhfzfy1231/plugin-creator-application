@@ -26,7 +26,7 @@ public class CreatorApplicationWebhookNotifier {
     private static final String SETTINGS_GROUP = "webhook";
     private static final JsonMapper JSON_MAPPER = JsonMapper.shared();
     private static final WebClient WEB_CLIENT = WebClient.builder()
-        .defaultHeader("User-Agent", "Halo-Creator-Application/0.3.0")
+        .defaultHeader("User-Agent", "Halo-Creator-Application/0.3.2")
         .build();
 
     private final ReactiveSettingFetcher settingFetcher;

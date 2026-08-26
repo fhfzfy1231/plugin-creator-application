@@ -94,10 +94,11 @@ async function submit() {
     if (fileInput) fileInput.value = ''
     messageType.value = 'success'
     message.value = '申请已提交，请等待管理员审核。'
-  } catch (error: any) {
+  } catch (error: unknown) {
     messageType.value = 'error'
-    message.value =
-      error?.response?.data?.detail || error?.response?.data?.message || '提交失败，请稍后重试。'
+    message.value = axios.isAxiosError(error)
+      ? error.response?.data?.detail || error.response?.data?.message || '提交失败，请稍后重试。'
+      : '提交失败，请稍后重试。'
   } finally {
     submitting.value = false
   }

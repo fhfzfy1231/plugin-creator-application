@@ -34,5 +34,8 @@ rules:
     resources: [ "applications" ]
     verbs: [ "get", "list" ]
   - apiGroups: [ "api.creator.jnoasa.cn" ]
+    resources: [ "applications/paged" ]
+    verbs: [ "get", "list" ]
+  - apiGroups: [ "api.creator.jnoasa.cn" ]
     resources: [ "applications/review" ]
     verbs: [ "create" ]
