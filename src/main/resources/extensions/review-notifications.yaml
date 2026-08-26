@@ -1,0 +1,129 @@
+apiVersion: notification.halo.run/v1alpha1
+kind: ReasonType
+metadata:
+  name: creator-application-approved
+spec:
+  displayName: "创作者申请已通过"
+  description: "创作者申请审核通过后通知申请人。"
+  properties:
+    - name: displayName
+      type: string
+      description: "申请人的显示名称。"
+    - name: stageLabel
+      type: string
+      description: "申请阶段。"
+    - name: reviewedAt
+      type: string
+      description: "审核时间。"
+    - name: reviewer
+      type: string
+      description: "审核管理员。"
+---
+apiVersion: notification.halo.run/v1alpha1
+kind: NotificationTemplate
+metadata:
+  name: creator-application-approved
+spec:
+  reasonSelector:
+    reasonType: creator-application-approved
+    language: default
+  template:
+    title: "你的[(${stageLabel})]申请已审核通过"
+    rawBody: |
+      [(${displayName})]，你好：
+
+      你提交的[(${stageLabel})]申请已经审核通过。
+      感谢你愿意参与网站内容建设，管理员将按站点流程为你完成后续安排。
+
+      审核人：[(${reviewer})]
+      审核时间：[(${reviewedAt})]
+
+      此邮件由系统自动发送，请勿直接回复。
+    htmlBody: |
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; color: #1f2937; max-width: 620px; margin: 0 auto; padding: 24px;">
+        <div style="border: 1px solid #d1fae5; border-radius: 14px; overflow: hidden;">
+          <div style="background: #059669; color: #ffffff; padding: 24px 28px;">
+            <h1 style="font-size: 22px; margin: 0;">创作者申请已通过</h1>
+          </div>
+          <div style="padding: 26px 28px;">
+            <p th:text="|${displayName}，你好：|"></p>
+            <p>你提交的<span th:text="${stageLabel}"></span>申请已经审核通过。</p>
+            <p>感谢你愿意参与网站内容建设，管理员将按站点流程为你完成后续安排。</p>
+            <div style="background: #f0fdf4; border-radius: 9px; padding: 14px 18px; margin-top: 20px;">
+              <div>审核人：<span th:text="${reviewer}"></span></div>
+              <div>审核时间：<span th:text="${reviewedAt}"></span></div>
+            </div>
+          </div>
+          <div style="background: #f9fafb; color: #6b7280; font-size: 13px; padding: 14px 28px;">此邮件由系统自动发送，请勿直接回复。</div>
+        </div>
+      </div>
+---
+apiVersion: notification.halo.run/v1alpha1
+kind: ReasonType
+metadata:
+  name: creator-application-rejected
+spec:
+  displayName: "创作者申请未通过"
+  description: "创作者申请审核未通过后通知申请人，并附带管理员留言。"
+  properties:
+    - name: displayName
+      type: string
+      description: "申请人的显示名称。"
+    - name: stageLabel
+      type: string
+      description: "申请阶段。"
+    - name: reviewedAt
+      type: string
+      description: "审核时间。"
+    - name: reviewer
+      type: string
+      description: "审核管理员。"
+    - name: reviewMessage
+      type: string
+      description: "管理员填写的审核留言。"
+---
+apiVersion: notification.halo.run/v1alpha1
+kind: NotificationTemplate
+metadata:
+  name: creator-application-rejected
+spec:
+  reasonSelector:
+    reasonType: creator-application-rejected
+    language: default
+  template:
+    title: "你的[(${stageLabel})]申请暂未通过审核"
+    rawBody: |
+      [(${displayName})]，你好：
+
+      很遗憾，你提交的[(${stageLabel})]申请本次暂未通过审核。
+      你可以根据管理员留言补充或调整相关内容，准备好后再次提交申请。
+
+      管理员留言：
+      [(${reviewMessage})]
+
+      审核人：[(${reviewer})]
+      审核时间：[(${reviewedAt})]
+
+      此邮件由系统自动发送，请勿直接回复。
+    htmlBody: |
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; color: #1f2937; max-width: 620px; margin: 0 auto; padding: 24px;">
+        <div style="border: 1px solid #fee2e2; border-radius: 14px; overflow: hidden;">
+          <div style="background: #dc2626; color: #ffffff; padding: 24px 28px;">
+            <h1 style="font-size: 22px; margin: 0;">创作者申请暂未通过</h1>
+          </div>
+          <div style="padding: 26px 28px;">
+            <p th:text="|${displayName}，你好：|"></p>
+            <p>很遗憾，你提交的<span th:text="${stageLabel}"></span>申请本次暂未通过审核。</p>
+            <p>你可以根据管理员留言补充或调整相关内容，准备好后再次提交申请。</p>
+            <div style="background: #fef2f2; border-left: 4px solid #dc2626; border-radius: 6px; padding: 14px 18px; margin: 20px 0; white-space: pre-wrap;">
+              <strong>管理员留言</strong>
+              <div th:text="${reviewMessage}" style="margin-top: 6px;"></div>
+            </div>
+            <div style="color: #6b7280;">
+              <div>审核人：<span th:text="${reviewer}"></span></div>
+              <div>审核时间：<span th:text="${reviewedAt}"></span></div>
+            </div>
+          </div>
+          <div style="background: #f9fafb; color: #6b7280; font-size: 13px; padding: 14px 28px;">此邮件由系统自动发送，请勿直接回复。</div>
+        </div>
+      </div>

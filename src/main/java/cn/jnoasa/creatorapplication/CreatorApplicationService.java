@@ -17,6 +17,7 @@ import run.halo.app.extension.ReactiveExtensionClient;
 public class CreatorApplicationService {
     private final ReactiveExtensionClient client;
     private final CreatorApplicationWebhookNotifier webhookNotifier;
+    private final CreatorApplicationReviewNotificationPublisher reviewNotificationPublisher;
 
     public Mono<CreatorApplication> submit(String username, SubmitCommand command) {
         return client.fetch(User.class, username)
@@ -55,7 +56,9 @@ public class CreatorApplicationService {
                 app.getSpec().setReviewMessage(trim(command.message()));
                 app.getSpec().setReviewer(reviewer);
                 app.getSpec().setReviewedAt(Instant.now());
-                return client.update(app);
+                return client.update(app)
+                    .flatMap(updated -> reviewNotificationPublisher.publish(updated)
+                        .thenReturn(updated));
             });
     }
 
