@@ -10,7 +10,6 @@ const reason = ref('')
 const screenshot = ref<string | null>(null)
 const screenshotName = ref('')
 const articleTitle = ref('')
-const articleUrl = ref('')
 const message = ref('')
 const submitting = ref(false)
 const messageType = ref<'success' | 'error' | ''>('')
@@ -70,9 +69,9 @@ async function submit() {
     message.value = '请上传 QQ 群截图并填写申请理由。'
     return
   }
-  if (!isContributor.value && (!articleTitle.value.trim() || !articleUrl.value.trim())) {
+  if (!isContributor.value && !articleTitle.value.trim()) {
     messageType.value = 'error'
-    message.value = '请填写文章名称和链接。'
+    message.value = '请填写文章名称。'
     return
   }
 
@@ -83,13 +82,11 @@ async function submit() {
       reason: reason.value,
       qqScreenshot: screenshot.value,
       articleTitle: articleTitle.value,
-      articleUrl: articleUrl.value,
     })
     reason.value = ''
     screenshot.value = null
     screenshotName.value = ''
     articleTitle.value = ''
-    articleUrl.value = ''
     const fileInput = document.querySelector<HTMLInputElement>('#qq-screenshot')
     if (fileInput) fileInput.value = ''
     messageType.value = 'success'
@@ -162,16 +159,6 @@ async function submit() {
               v-model="articleTitle"
               maxlength="200"
               placeholder="请输入已完成文章的名称"
-            />
-          </div>
-
-          <div class="field">
-            <label for="article-url">文章链接</label>
-            <input
-              id="article-url"
-              v-model="articleUrl"
-              type="url"
-              placeholder="https://jnoasa.cn/archives/..."
             />
           </div>
         </template>

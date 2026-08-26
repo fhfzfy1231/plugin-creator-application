@@ -159,9 +159,7 @@ onMounted(load)
           <time>{{ new Date(item.metadata.creationTimestamp).toLocaleString() }}</time>
         </div>
         <p v-if="item.spec.reason">申请理由：{{ item.spec.reason }}</p>
-        <a v-if="item.spec.articleUrl" :href="item.spec.articleUrl" target="_blank"
-          >{{ item.spec.articleTitle }} ↗</a
-        >
+        <p v-if="item.spec.articleTitle">文章名称：{{ item.spec.articleTitle }}</p>
         <img v-if="item.spec.qqScreenshot" :src="item.spec.qqScreenshot" alt="QQ 群截图" />
         <div v-if="item.spec.status === 'PENDING'" class="actions">
           <button class="reject" @click="review(item, false)">驳回</button>

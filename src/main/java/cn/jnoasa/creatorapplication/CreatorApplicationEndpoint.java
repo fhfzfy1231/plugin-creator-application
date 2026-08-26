@@ -45,7 +45,7 @@ public class CreatorApplicationEndpoint implements CustomEndpoint {
     private Mono<ServerResponse> submit(ServerRequest request) {
         return request.principal().flatMap(p -> request.bodyToMono(SubmitBody.class)
             .flatMap(body -> service.submit(p.getName(), new CreatorApplicationService.SubmitCommand(
-                body.stage, body.reason, body.qqScreenshot, body.articleTitle, body.articleUrl))))
+                body.stage, body.reason, body.qqScreenshot, body.articleTitle))))
             .flatMap(value -> ServerResponse.ok().bodyValue(value));
     }
 
@@ -123,7 +123,6 @@ public class CreatorApplicationEndpoint implements CustomEndpoint {
         public String reason;
         public String qqScreenshot;
         public String articleTitle;
-        public String articleUrl;
     }
     public static class ReviewBody { public boolean approved; public String message; }
 

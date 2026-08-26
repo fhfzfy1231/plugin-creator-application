@@ -36,7 +36,7 @@ public class CreatorApplicationService {
                 spec.setReason(trim(command.reason()));
                 spec.setQqScreenshot(trim(command.qqScreenshot()));
                 spec.setArticleTitle(trim(command.articleTitle()));
-                spec.setArticleUrl(trim(command.articleUrl()));
+                spec.setArticleUrl(null);
                 spec.setSubmittedAt(Instant.now());
                 app.setSpec(spec);
                 return client.create(app)
@@ -79,8 +79,7 @@ public class CreatorApplicationService {
             if (image == null || !image.matches("^data:image/(png|jpeg|webp);base64,.+")) throw bad("请上传 PNG、JPEG 或 WebP 截图");
             if (image.length() > 2_800_000) throw bad("截图不能超过约 2 MB");
         } else {
-            if (trim(c.articleTitle()) == null || trim(c.articleUrl()) == null) throw bad("文章标题和链接不能为空");
-            if (!c.articleUrl().matches("^https?://.+")) throw bad("文章链接格式不正确");
+            if (trim(c.articleTitle()) == null) throw bad("文章名称不能为空");
         }
     }
 
@@ -88,6 +87,6 @@ public class CreatorApplicationService {
     private static String trim(String value) { return value == null || value.isBlank() ? null : value.trim(); }
 
     public record SubmitCommand(CreatorApplication.Stage stage, String reason, String qqScreenshot,
-                                String articleTitle, String articleUrl) {}
+                                String articleTitle) {}
     public record ReviewCommand(boolean approved, String message) {}
 }

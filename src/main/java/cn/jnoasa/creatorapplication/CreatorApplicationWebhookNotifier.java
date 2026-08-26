@@ -71,7 +71,6 @@ public class CreatorApplicationWebhookNotifier {
         applicationPayload.put("stage", spec.getStage().name());
         applicationPayload.put("reason", spec.getReason());
         applicationPayload.put("articleTitle", spec.getArticleTitle());
-        applicationPayload.put("articleUrl", spec.getArticleUrl());
         applicationPayload.put("submittedAt", spec.getSubmittedAt() == null
             ? null : spec.getSubmittedAt().toString());
 
