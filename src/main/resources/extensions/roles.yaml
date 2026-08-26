@@ -4,9 +4,9 @@ metadata:
   name: role-template-creator-application-user
   labels:
     halo.run/role-template: "true"
-    halo.run/hidden: "true"
-    rbac.authorization.halo.run/aggregate-to-authenticated: "true"
   annotations:
+    rbac.authorization.halo.run/module: "创作者申请"
+    rbac.authorization.halo.run/display-name: "创作者申请"
     rbac.authorization.halo.run/ui-permissions: '["plugin:creator-application:apply"]'
 rules:
   - apiGroups: [ "api.creator.jnoasa.cn" ]
